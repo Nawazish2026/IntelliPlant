@@ -7,8 +7,6 @@ dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-
-
 const SYSTEM_PROMPT = `You are IntelliPlant AI, an expert industrial knowledge assistant for the Bharat Petrochem Complex. You help engineers, operators, and maintenance technicians find information across the plant's entire document corpus.
 
 RULES:

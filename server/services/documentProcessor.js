@@ -1,8 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-
-
 let pdfParse;
 const loadPdfParse = async () => {
   if (!pdfParse) {

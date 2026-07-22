@@ -6,7 +6,6 @@ dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-
 export async function getDashboard() {
   try {
     const [total, compliant, gaps, pending, bySeverity, byCategory, byRegulation] = await Promise.all([

@@ -5,8 +5,6 @@ dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-
-
 const EXTRACTION_PROMPT = `You are an industrial knowledge extraction expert. Analyze the following document text from an industrial plant and extract ALL entities.
 
 For each entity, provide:

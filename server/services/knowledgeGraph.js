@@ -1,8 +1,6 @@
 import Entity from '../models/Entity.js';
 import KnowledgeEdge from '../models/KnowledgeEdge.js';
 
-
-
 export async function getFullGraph(filters = {}) {
   try {
     const entityQuery = {};

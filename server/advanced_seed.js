@@ -10,7 +10,6 @@ dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-
 const equipmentList = [
   { name: 'P-101A', type: 'equipment', subType: 'Centrifugal Pump', description: 'Main crude feed pump, Stage 1' },
   { name: 'P-101B', type: 'equipment', subType: 'Centrifugal Pump', description: 'Standby crude feed pump, Stage 1' },
