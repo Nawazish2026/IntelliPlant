@@ -6,14 +6,8 @@ dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-/**
- * Embedding Service
- * Generates vector embeddings using Gemini and stores them in MongoDB
- */
 
-/**
- * Generate embedding for a single text
- */
+
 export async function generateEmbedding(text) {
   try {
     const result = await ai.models.embedContent({
@@ -27,9 +21,6 @@ export async function generateEmbedding(text) {
   }
 }
 
-/**
- * Generate embeddings for multiple text chunks and store in MongoDB
- */
 export async function generateAndStoreEmbeddings(documentId, chunks, metadata = {}) {
   const results = [];
 
@@ -54,7 +45,6 @@ export async function generateAndStoreEmbeddings(documentId, chunks, metadata = 
         results.push(embeddingDoc);
       }
 
-      // Small delay to respect rate limits
       await new Promise(resolve => setTimeout(resolve, 100));
     } catch (error) {
       console.error(`Embedding error for chunk ${chunk.index}:`, error.message);
@@ -64,9 +54,6 @@ export async function generateAndStoreEmbeddings(documentId, chunks, metadata = 
   return results;
 }
 
-/**
- * Cosine similarity calculation (local fallback when Atlas Vector Search isn't available)
- */
 function cosineSimilarity(a, b) {
   if (!a || !b || a.length !== b.length) return 0;
   let dotProduct = 0;
@@ -80,16 +67,11 @@ function cosineSimilarity(a, b) {
   return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 }
 
-/**
- * Search for similar embeddings using local cosine similarity
- * Falls back to this when Atlas Vector Search index is not available
- */
 export async function searchSimilar(queryText, limit = 5) {
   try {
     const queryEmbedding = await generateEmbedding(queryText);
     if (!queryEmbedding) return [];
 
-    // Try Atlas Vector Search first
     try {
       const results = await Embedding.aggregate([
         {
@@ -114,10 +96,8 @@ export async function searchSimilar(queryText, limit = 5) {
 
       if (results.length > 0) return results;
     } catch (e) {
-      // Atlas Vector Search not available, use local fallback
     }
 
-    // Local cosine similarity fallback
     const allEmbeddings = await Embedding.find({}).lean();
     const scored = allEmbeddings.map(doc => ({
       ...doc,

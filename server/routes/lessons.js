@@ -4,10 +4,6 @@ import { getDashboard, analyzePatterns, getAlerts } from '../services/lessonsAI.
 
 const router = express.Router();
 
-/**
- * GET /api/lessons/dashboard
- * Get lessons learned dashboard
- */
 router.get('/dashboard', async (req, res) => {
   try {
     const data = await getDashboard();
@@ -17,10 +13,6 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-/**
- * GET /api/lessons/incidents
- * Get all incidents
- */
 router.get('/incidents', async (req, res) => {
   try {
     const { type, severity, equipment } = req.query;
@@ -36,10 +28,6 @@ router.get('/incidents', async (req, res) => {
   }
 });
 
-/**
- * POST /api/lessons/analyze
- * Analyze incident patterns using AI
- */
 router.post('/analyze', async (req, res) => {
   try {
     const analysis = await analyzePatterns();
@@ -49,10 +37,6 @@ router.post('/analyze', async (req, res) => {
   }
 });
 
-/**
- * GET /api/lessons/alerts
- * Get proactive alerts
- */
 router.get('/alerts', async (req, res) => {
   try {
     const alerts = await getAlerts();

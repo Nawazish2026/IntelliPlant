@@ -4,10 +4,6 @@ import { getDashboard, generateRCA, getPredictions } from '../services/maintenan
 
 const router = express.Router();
 
-/**
- * GET /api/maintenance/dashboard
- * Get maintenance dashboard data
- */
 router.get('/dashboard', async (req, res) => {
   try {
     const data = await getDashboard();
@@ -17,10 +13,6 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-/**
- * GET /api/maintenance/records
- * Get maintenance records with filters
- */
 router.get('/records', async (req, res) => {
   try {
     const { equipmentTag, type, status, priority } = req.query;
@@ -40,10 +32,6 @@ router.get('/records', async (req, res) => {
   }
 });
 
-/**
- * POST /api/maintenance/rca
- * Generate Root Cause Analysis for equipment
- */
 router.post('/rca', async (req, res) => {
   try {
     const { equipmentTag } = req.body;
@@ -58,10 +46,6 @@ router.post('/rca', async (req, res) => {
   }
 });
 
-/**
- * GET /api/maintenance/predictions
- * Get predictive maintenance recommendations
- */
 router.get('/predictions', async (req, res) => {
   try {
     const predictions = await getPredictions();

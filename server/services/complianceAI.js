@@ -6,14 +6,7 @@ dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-/**
- * Compliance AI Service
- * Regulatory gap detection, audit package generation, and compliance monitoring
- */
 
-/**
- * Get compliance dashboard data
- */
 export async function getDashboard() {
   try {
     const [total, compliant, gaps, pending, bySeverity, byCategory, byRegulation] = await Promise.all([
@@ -63,9 +56,6 @@ export async function getDashboard() {
   }
 }
 
-/**
- * Get all compliance gaps with details
- */
 export async function getGaps() {
   try {
     return await ComplianceRule.find({ status: 'gap' })
@@ -77,9 +67,6 @@ export async function getGaps() {
   }
 }
 
-/**
- * Generate audit evidence package using AI
- */
 export async function generateAuditPackage(regulation) {
   try {
     const rules = await ComplianceRule.find(

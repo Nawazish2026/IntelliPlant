@@ -7,10 +7,7 @@ dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-/**
- * RAG Service
- * Retrieval-Augmented Generation pipeline using MongoDB Vector Search + Gemini
- */
+
 
 const SYSTEM_PROMPT = `You are IntelliPlant AI, an expert industrial knowledge assistant for the Bharat Petrochem Complex. You help engineers, operators, and maintenance technicians find information across the plant's entire document corpus.
 
@@ -25,20 +22,14 @@ RULES:
 8. Format your response with clear headings and bullet points for readability.
 9. If the question relates to multiple documents, synthesize information across them.`;
 
-/**
- * Process a chat query through the RAG pipeline
- */
 export async function processQuery(query, conversationHistory = []) {
   try {
-    // Step 1: Retrieve relevant chunks via vector search
     const relevantChunks = await searchSimilar(query, 6);
 
-    // Step 2: Build context from retrieved chunks
     let context = '';
     const sources = [];
 
     if (relevantChunks.length > 0) {
-      // Fetch document names for citations
       const docIds = [...new Set(relevantChunks.map(c => c.documentId?.toString()).filter(Boolean))];
       const docs = await Document.find({ _id: { $in: docIds } }).lean();
       const docMap = {};
@@ -62,13 +53,11 @@ export async function processQuery(query, conversationHistory = []) {
       }).join('\n\n---\n\n');
     }
 
-    // Step 3: Build conversation context
     const messages = [
       { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
       { role: 'model', parts: [{ text: 'Understood. I am IntelliPlant AI, ready to assist with industrial knowledge queries. I will only answer based on the provided context and always cite sources.' }] }
     ];
 
-    // Add conversation history (last 6 messages)
     const recentHistory = conversationHistory.slice(-6);
     for (const msg of recentHistory) {
       messages.push({
@@ -77,14 +66,12 @@ export async function processQuery(query, conversationHistory = []) {
       });
     }
 
-    // Step 4: Construct the final query with context
     const augmentedQuery = context
       ? `Based on the following retrieved documents from the plant knowledge base:\n\n${context}\n\n---\n\nUser Question: ${query}`
       : `User Question: ${query}\n\nNote: No relevant documents were found in the knowledge base for this query. Please inform the user accordingly.`;
 
     messages.push({ role: 'user', parts: [{ text: augmentedQuery }] });
 
-    // Step 5: Generate response with Gemini
     const response = await ai.models.generateContent({
       model: 'gemini-flash-latest',
       contents: messages,
@@ -96,7 +83,6 @@ export async function processQuery(query, conversationHistory = []) {
 
     const answer = response.text || 'I apologize, but I was unable to generate a response. Please try rephrasing your question.';
 
-    // Determine confidence based on retrieval scores
     const avgScore = sources.length > 0
       ? sources.reduce((sum, s) => sum + (s.score || 0), 0) / sources.length
       : 0;
@@ -124,9 +110,6 @@ export async function processQuery(query, conversationHistory = []) {
   }
 }
 
-/**
- * Get suggested questions based on available data
- */
 export function getSuggestedQuestions() {
   return [
     "What is the maintenance history of pump P-101?",

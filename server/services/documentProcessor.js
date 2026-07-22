@@ -1,13 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
-/**
- * Document Processor Service
- * Handles text extraction from various document formats
- * Uses pdf-parse for digital PDFs, xlsx for spreadsheets
- */
 
-// Dynamic import for pdf-parse (CommonJS module)
+
 let pdfParse;
 const loadPdfParse = async () => {
   if (!pdfParse) {
@@ -17,9 +12,6 @@ const loadPdfParse = async () => {
   return pdfParse;
 };
 
-/**
- * Extract text from a PDF file
- */
 export async function extractFromPDF(filePath) {
   try {
     const parse = await loadPdfParse();
@@ -36,9 +28,6 @@ export async function extractFromPDF(filePath) {
   }
 }
 
-/**
- * Extract text from Excel/CSV files
- */
 export async function extractFromSpreadsheet(filePath) {
   try {
     const XLSX = await import('xlsx');
@@ -62,9 +51,6 @@ export async function extractFromSpreadsheet(filePath) {
   }
 }
 
-/**
- * Extract text from plain text files
- */
 export async function extractFromText(filePath) {
   try {
     const text = fs.readFileSync(filePath, 'utf-8');
@@ -79,9 +65,6 @@ export async function extractFromText(filePath) {
   }
 }
 
-/**
- * Process any supported document type
- */
 export async function processDocument(filePath, fileType) {
   switch (fileType) {
     case 'pdf':
@@ -97,13 +80,6 @@ export async function processDocument(filePath, fileType) {
   }
 }
 
-/**
- * Chunk text into overlapping segments for embedding
- * @param {string} text - Full document text
- * @param {number} chunkSize - Characters per chunk (default 500)
- * @param {number} overlap - Overlap characters (default 100)
- * @returns {Array<{text: string, index: number}>}
- */
 export function chunkText(text, chunkSize = 500, overlap = 100) {
   if (!text || text.length === 0) return [];
 
@@ -115,7 +91,6 @@ export function chunkText(text, chunkSize = 500, overlap = 100) {
     const end = Math.min(start + chunkSize, text.length);
     let chunk = text.slice(start, end);
 
-    // Try to break at sentence or word boundary
     if (end < text.length) {
       const lastPeriod = chunk.lastIndexOf('.');
       const lastNewline = chunk.lastIndexOf('\n');
@@ -137,9 +112,6 @@ export function chunkText(text, chunkSize = 500, overlap = 100) {
   return chunks;
 }
 
-/**
- * Detect file type from filename
- */
 export function detectFileType(filename) {
   const ext = path.extname(filename).toLowerCase().replace('.', '');
   const typeMap = {

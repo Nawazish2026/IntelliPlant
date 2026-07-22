@@ -3,10 +3,6 @@ import { getFullGraph, getEntityDetails, getGraphStats, searchEntities } from '.
 
 const router = express.Router();
 
-/**
- * GET /api/knowledge/graph
- * Get the full knowledge graph for visualization
- */
 router.get('/graph', async (req, res) => {
   try {
     const { type, search } = req.query;
@@ -17,10 +13,6 @@ router.get('/graph', async (req, res) => {
   }
 });
 
-/**
- * GET /api/knowledge/stats
- * Get knowledge graph statistics
- */
 router.get('/stats', async (req, res) => {
   try {
     const stats = await getGraphStats();
@@ -30,10 +22,6 @@ router.get('/stats', async (req, res) => {
   }
 });
 
-/**
- * GET /api/knowledge/entities
- * Search entities
- */
 router.get('/entities', async (req, res) => {
   try {
     const { q, type, limit } = req.query;
@@ -44,10 +32,6 @@ router.get('/entities', async (req, res) => {
   }
 });
 
-/**
- * GET /api/knowledge/entities/:id
- * Get entity details with connections
- */
 router.get('/entities/:id', async (req, res) => {
   try {
     const entity = await getEntityDetails(req.params.id);

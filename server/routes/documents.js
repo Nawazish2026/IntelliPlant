@@ -10,10 +10,6 @@ import { generateAndStoreEmbeddings } from '../services/embeddingService.js';
 
 const router = express.Router();
 
-/**
- * POST /api/documents/upload
- * Upload and process a document
- */
 router.post('/upload', upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
@@ -22,7 +18,6 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
     const fileType = detectFileType(req.file.originalname);
 
-    // Create document record
     const doc = await Document.create({
       filename: req.file.filename,
       originalName: req.file.originalname,
@@ -33,7 +28,6 @@ router.post('/upload', upload.single('file'), async (req, res) => {
       category: req.body.category || 'other'
     });
 
-    // Process asynchronously
     processDocumentPipeline(doc, req.file.path).catch(err => {
       console.error('Pipeline error:', err);
     });
@@ -48,12 +42,8 @@ router.post('/upload', upload.single('file'), async (req, res) => {
   }
 });
 
-/**
- * Full document processing pipeline (async)
- */
 async function processDocumentPipeline(doc, filePath) {
   try {
-    // Step 1: Extract text
     const { text, pageCount, info } = await processDocument(filePath, doc.fileType);
     doc.extractedText = text;
     doc.pageCount = pageCount;
@@ -65,14 +55,11 @@ async function processDocumentPipeline(doc, filePath) {
       return;
     }
 
-    // Step 2: Categorize document
     const category = await categorizeDocument(text);
     doc.category = category;
 
-    // Step 3: Extract entities
     const { entities, relationships } = await extractEntities(text, category);
 
-    // Store entities
     const entityMap = {};
     for (const entity of entities) {
       let existing = await Entity.findOne({ name: entity.name, type: entity.type });
@@ -102,7 +89,6 @@ async function processDocumentPipeline(doc, filePath) {
       }
     }
 
-    // Store relationships
     for (const rel of relationships) {
       const sourceEntity = entityMap[rel.source];
       const targetEntity = entityMap[rel.target];
@@ -126,7 +112,6 @@ async function processDocumentPipeline(doc, filePath) {
 
     doc.entityCount = entities.length;
 
-    // Step 4: Generate embeddings
     const chunks = chunkText(text);
     await generateAndStoreEmbeddings(doc._id, chunks, {
       documentType: category,
@@ -134,7 +119,6 @@ async function processDocumentPipeline(doc, filePath) {
     });
     doc.chunkCount = chunks.length;
 
-    // Mark as ready
     doc.status = 'ready';
     await doc.save();
 
@@ -147,10 +131,6 @@ async function processDocumentPipeline(doc, filePath) {
   }
 }
 
-/**
- * GET /api/documents
- * List all documents
- */
 router.get('/', async (req, res) => {
   try {
     const { status, category, search } = req.query;
@@ -175,10 +155,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-/**
- * GET /api/documents/stats
- * Get document statistics
- */
 router.get('/stats', async (req, res) => {
   try {
     const [total, byStatus, byCategory, totalEntities, totalEdges, totalEmbeddings] = await Promise.all([
@@ -203,16 +179,11 @@ router.get('/stats', async (req, res) => {
   }
 });
 
-/**
- * GET /api/documents/:id
- * Get document details
- */
 router.get('/:id', async (req, res) => {
   try {
     const doc = await Document.findById(req.params.id).lean();
     if (!doc) return res.status(404).json({ error: 'Document not found' });
 
-    // Get associated entities
     const entities = await Entity.find({ documentIds: doc._id })
       .select('-embedding')
       .lean();
@@ -223,19 +194,13 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-/**
- * DELETE /api/documents/:id
- * Delete a document and its associated data
- */
 router.delete('/:id', async (req, res) => {
   try {
     const doc = await Document.findById(req.params.id);
     if (!doc) return res.status(404).json({ error: 'Document not found' });
 
-    // Remove embeddings
     await Embedding.deleteMany({ documentId: doc._id });
 
-    // Remove document reference from entities
     await Entity.updateMany(
       { documentIds: doc._id },
       { $pull: { documentIds: doc._id } }

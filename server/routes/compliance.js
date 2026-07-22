@@ -4,10 +4,6 @@ import { getDashboard, getGaps, generateAuditPackage } from '../services/complia
 
 const router = express.Router();
 
-/**
- * GET /api/compliance/dashboard
- * Get compliance dashboard data
- */
 router.get('/dashboard', async (req, res) => {
   try {
     const data = await getDashboard();
@@ -17,10 +13,6 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-/**
- * GET /api/compliance/rules
- * Get all compliance rules
- */
 router.get('/rules', async (req, res) => {
   try {
     const { regulation, category, status } = req.query;
@@ -36,10 +28,6 @@ router.get('/rules', async (req, res) => {
   }
 });
 
-/**
- * GET /api/compliance/gaps
- * Get all compliance gaps
- */
 router.get('/gaps', async (req, res) => {
   try {
     const gaps = await getGaps();
@@ -49,10 +37,6 @@ router.get('/gaps', async (req, res) => {
   }
 });
 
-/**
- * POST /api/compliance/audit-package
- * Generate audit evidence package
- */
 router.post('/audit-package', async (req, res) => {
   try {
     const { regulation } = req.body;

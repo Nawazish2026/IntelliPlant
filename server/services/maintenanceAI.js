@@ -6,14 +6,8 @@ dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-/**
- * Maintenance AI Service
- * Root Cause Analysis, predictive maintenance, and schedule optimization
- */
 
-/**
- * Get maintenance dashboard data
- */
+
 export async function getDashboard() {
   try {
     const [
@@ -69,12 +63,8 @@ export async function getDashboard() {
   }
 }
 
-/**
- * Generate Root Cause Analysis for an equipment failure
- */
 export async function generateRCA(equipmentTag) {
   try {
-    // Fetch all maintenance history for this equipment
     const records = await MaintenanceRecord.find({ equipmentTag })
       .sort({ completedDate: -1 })
       .lean();
@@ -133,9 +123,6 @@ Provide your analysis in a structured, professional format.`;
   }
 }
 
-/**
- * Get predictive maintenance recommendations
- */
 export async function getPredictions() {
   try {
     const equipmentStats = await MaintenanceRecord.aggregate([
@@ -155,7 +142,6 @@ export async function getPredictions() {
       { $sort: { correctiveCount: -1 } }
     ]);
 
-    // Calculate risk scores
     const predictions = equipmentStats.map(eq => {
       const daysSinceLastMaintenance = eq.lastMaintenance
         ? Math.floor((Date.now() - new Date(eq.lastMaintenance).getTime()) / (1000 * 60 * 60 * 24))

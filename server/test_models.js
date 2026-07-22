@@ -25,7 +25,7 @@ async function run() {
   await testModel('gemini-2.0-flash');
   await testModel('gemini-2.5-flash');
   
-  // Also checking standard names in case
+
   await testModel('gemini-2.0-flash-exp');
 }
 

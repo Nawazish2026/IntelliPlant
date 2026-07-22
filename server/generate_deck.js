@@ -1,10 +1,8 @@
 import PptxGenJS from 'pptxgenjs';
 import path from 'path';
 
-// Initialize Presentation
 let pres = new PptxGenJS();
 
-// Define Slide Master (Template)
 pres.defineSlideMaster({
   title: 'MASTER_SLIDE',
   background: { color: '1A1A1A' },
@@ -15,14 +13,12 @@ pres.defineSlideMaster({
   ]
 });
 
-// Title Slide
 let slide1 = pres.addSlide();
 slide1.background = { color: '0B0F19' };
 slide1.addText('IntelliPlant', { x: 1, y: 2, w: 8, fontSize: 48, bold: true, color: 'FFFFFF', align: 'center' });
 slide1.addText('Unified Asset & Operations Brain for Zero-Downtime Refineries', { x: 1, y: 3, w: 8, fontSize: 24, color: '00BFFF', align: 'center' });
 slide1.addText('Team Submission for ET AI Hackathon 2026', { x: 1, y: 4, w: 8, fontSize: 16, color: 'CCCCCC', align: 'center' });
 
-// Problem Context
 let slide2 = pres.addSlide({ masterName: 'MASTER_SLIDE' });
 slide2.addText('The Problem: The Knowledge Cliff', { x: 0.5, y: 1, w: 9, fontSize: 32, bold: true, color: 'FFFFFF' });
 slide2.addText([
@@ -32,7 +28,6 @@ slide2.addText([
   { text: '• Impact: Accounts for 18-22% of unplanned downtime in Indian heavy industry.', options: { bullet: true, bold: true, color: 'FF6B6B' } }
 ], { x: 0.5, y: 2, w: 9, h: 3, fontSize: 20, color: 'DDDDDD', lineSpacing: 30 });
 
-// The Solution
 let slide3 = pres.addSlide({ masterName: 'MASTER_SLIDE' });
 slide3.addText('The Solution: IntelliPlant', { x: 0.5, y: 1, w: 9, fontSize: 32, bold: true, color: 'FFFFFF' });
 slide3.addText([
@@ -42,7 +37,6 @@ slide3.addText([
   { text: '• Automatically extracts regulatory gaps and predicts maintenance failures.', options: { bullet: true } }
 ], { x: 0.5, y: 2, w: 9, h: 3, fontSize: 20, color: 'DDDDDD', lineSpacing: 30 });
 
-// Architecture
 let slide4 = pres.addSlide({ masterName: 'MASTER_SLIDE' });
 slide4.addText('System Architecture', { x: 0.5, y: 1, w: 9, fontSize: 32, bold: true, color: 'FFFFFF' });
 slide4.addText([
@@ -54,7 +48,6 @@ slide4.addText([
   { text: '*Please see the detailed Mermaid.js Architecture Diagram in the appendix.*', options: { italic: true, color: '888888', y: 4.5 } }
 ], { x: 0.5, y: 2, w: 9, h: 3, fontSize: 20, color: 'DDDDDD', lineSpacing: 30 });
 
-// Key Deliverable 1
 let slide5 = pres.addSlide({ masterName: 'MASTER_SLIDE' });
 slide5.addText('1. Universal Document Ingestion & Knowledge Graph', { x: 0.5, y: 1, w: 9, fontSize: 28, bold: true, color: 'FFFFFF' });
 slide5.addText([
@@ -63,7 +56,6 @@ slide5.addText([
   { text: '• Dynamically maps Knowledge Edges (P-101A -> is monitored by -> VT-101).', options: { bullet: true } }
 ], { x: 0.5, y: 2, w: 9, h: 2, fontSize: 20, color: 'DDDDDD', lineSpacing: 30 });
 
-// Key Deliverable 2
 let slide6 = pres.addSlide({ masterName: 'MASTER_SLIDE' });
 slide6.addText('2. Multi-Agent Intelligence System', { x: 0.5, y: 1, w: 9, fontSize: 28, bold: true, color: 'FFFFFF' });
 slide6.addText([
@@ -77,7 +69,6 @@ slide6.addText([
   { text: 'Maps live equipment data against OSHA/API standards to auto-generate audit packages.', options: { indentLevel: 1, color: 'CCCCCC' } }
 ], { x: 0.5, y: 2, w: 9, h: 3, fontSize: 18, lineSpacing: 20 });
 
-// Real Data
 let slide7 = pres.addSlide({ masterName: 'MASTER_SLIDE' });
 slide7.addText('Trained on Realistic Industrial Data', { x: 0.5, y: 1, w: 9, fontSize: 32, bold: true, color: 'FFFFFF' });
 slide7.addText([
@@ -87,7 +78,6 @@ slide7.addText([
   { text: '• Genuine Compliance Frameworks (OSHA 1910.119 Process Safety)', options: { bullet: true } }
 ], { x: 0.5, y: 2, w: 9, h: 3, fontSize: 20, color: 'DDDDDD', lineSpacing: 30 });
 
-// Conclusion
 let slide8 = pres.addSlide({ masterName: 'MASTER_SLIDE' });
 slide8.addText('Business Impact & Scalability', { x: 0.5, y: 1, w: 9, fontSize: 32, bold: true, color: 'FFFFFF' });
 slide8.addText([
@@ -98,7 +88,6 @@ slide8.addText([
   { text: '\n\nThank you for your time. Ready for Live Demo.', options: { bold: true, color: 'FFFFFF', align: 'center' } }
 ], { x: 0.5, y: 2, w: 9, h: 3.5, fontSize: 20, lineSpacing: 30 });
 
-// Save Presentation
 const outputPath = path.resolve('IntelliPlant_ET_Hackathon_Pitch.pptx');
 pres.writeFile({ fileName: outputPath }).then(() => {
     console.log('Presentation created successfully at:', outputPath);

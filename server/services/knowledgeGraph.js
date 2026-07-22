@@ -1,14 +1,8 @@
 import Entity from '../models/Entity.js';
 import KnowledgeEdge from '../models/KnowledgeEdge.js';
 
-/**
- * Knowledge Graph Service
- * Manages entity graph construction, traversal, and querying
- */
 
-/**
- * Get the full knowledge graph (nodes + edges) for visualization
- */
+
 export async function getFullGraph(filters = {}) {
   try {
     const entityQuery = {};
@@ -32,7 +26,6 @@ export async function getFullGraph(filters = {}) {
       ]
     }).lean();
 
-    // Format for react-force-graph
     const nodes = entities.map(entity => ({
       id: entity._id.toString(),
       name: entity.name,
@@ -65,9 +58,6 @@ export async function getFullGraph(filters = {}) {
   }
 }
 
-/**
- * Get entity details with connected entities
- */
 export async function getEntityDetails(entityId) {
   try {
     const entity = await Entity.findById(entityId)
@@ -77,7 +67,6 @@ export async function getEntityDetails(entityId) {
 
     if (!entity) return null;
 
-    // Find all connected entities
     const edges = await KnowledgeEdge.find({
       $or: [
         { sourceEntityId: entityId },
@@ -116,9 +105,6 @@ export async function getEntityDetails(entityId) {
   }
 }
 
-/**
- * Get graph statistics
- */
 export async function getGraphStats() {
   try {
     const [entityCount, edgeCount, typeCounts] = await Promise.all([
@@ -145,9 +131,6 @@ export async function getGraphStats() {
   }
 }
 
-/**
- * Search entities
- */
 export async function searchEntities(query, type = null, limit = 20) {
   try {
     const filter = {
@@ -168,7 +151,6 @@ export async function searchEntities(query, type = null, limit = 20) {
   }
 }
 
-// Helper functions for visualization
 function getNodeColor(type) {
   const colors = {
     equipment: '#3B82F6',

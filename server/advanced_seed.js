@@ -10,7 +10,6 @@ dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// --- HYPER-REALISTIC INDUSTRIAL DATASET ---
 
 const equipmentList = [
   { name: 'P-101A', type: 'equipment', subType: 'Centrifugal Pump', description: 'Main crude feed pump, Stage 1' },
@@ -169,7 +168,6 @@ async function seedDatabase() {
     await KnowledgeEdge.deleteMany({});
     console.log('Old data wiped.');
 
-    // 1. Seed Entities
     const allEntities = [...equipmentList, ...personnelList, ...processList];
     const insertedEntities = await Entity.insertMany(allEntities);
     console.log(`Inserted ${insertedEntities.length} entities.`);
@@ -177,7 +175,6 @@ async function seedDatabase() {
     const entityMap = {};
     insertedEntities.forEach(e => { entityMap[e.name] = e._id; });
 
-    // 2. Seed Incidents
     incidentsList.forEach((inc, i) => {
         const d = new Date();
         d.setDate(d.getDate() - (i * 12 + 2));
@@ -186,7 +183,6 @@ async function seedDatabase() {
     const insertedIncidents = await Incident.insertMany(incidentsList);
     console.log(`Inserted ${insertedIncidents.length} incidents.`);
 
-    // 3. Seed Maintenance
     maintenanceList[0].scheduledDate = insertedIncidents[0].date;
     maintenanceList[1].scheduledDate = new Date(new Date().setDate(new Date().getDate() - 10));
     maintenanceList[2].scheduledDate = insertedIncidents[3].date;
@@ -194,11 +190,9 @@ async function seedDatabase() {
     const insertedMaintenance = await MaintenanceRecord.insertMany(maintenanceList);
     console.log(`Inserted ${insertedMaintenance.length} maintenance records.`);
 
-    // 4. Seed Compliance
     const insertedCompliance = await ComplianceRule.insertMany(complianceList);
     console.log(`Inserted ${insertedCompliance.length} compliance rules.`);
 
-    // 5. Seed Knowledge Graph Edges (Entity to Entity only)
     const edges = [
       { sourceEntityId: entityMap['P-101A'], targetEntityId: entityMap['Atmospheric Distillation'], relationship: 'part_of', confidence: 1.0 },
       { sourceEntityId: entityMap['P-101B'], targetEntityId: entityMap['Atmospheric Distillation'], relationship: 'part_of', confidence: 1.0 },

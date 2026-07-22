@@ -5,10 +5,7 @@ dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-/**
- * Entity Extractor Service
- * Uses Gemini to extract industrial entities from document text
- */
+
 
 const EXTRACTION_PROMPT = `You are an industrial knowledge extraction expert. Analyze the following document text from an industrial plant and extract ALL entities.
 
@@ -44,12 +41,8 @@ Return ONLY valid JSON in this exact format:
 Document text to analyze:
 `;
 
-/**
- * Extract entities from document text using Gemini
- */
 export async function extractEntities(text, documentType = 'general') {
   try {
-    // Truncate very long texts to stay within token limits
     const maxChars = 15000;
     const truncatedText = text.length > maxChars
       ? text.slice(0, maxChars) + '\n\n[... text truncated for processing ...]'
@@ -70,7 +63,6 @@ export async function extractEntities(text, documentType = 'general') {
 
     const responseText = response.text || '';
 
-    // Parse JSON from response (handle markdown code blocks)
     let jsonStr = responseText;
     const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)```/);
     if (jsonMatch) {
@@ -88,9 +80,6 @@ export async function extractEntities(text, documentType = 'general') {
   }
 }
 
-/**
- * Categorize a document based on its content
- */
 export async function categorizeDocument(text) {
   try {
     const prompt = `Analyze this industrial document text and categorize it into exactly ONE of these categories:

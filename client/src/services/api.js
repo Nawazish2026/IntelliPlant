@@ -8,7 +8,6 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' }
 });
 
-// Documents
 export const documentsAPI = {
   getAll: (params) => api.get('/documents', { params }),
   getStats: () => api.get('/documents/stats'),
@@ -20,7 +19,6 @@ export const documentsAPI = {
   delete: (id) => api.delete(`/documents/${id}`)
 };
 
-// Knowledge Graph
 export const knowledgeAPI = {
   getGraph: (params) => api.get('/knowledge/graph', { params }),
   getStats: () => api.get('/knowledge/stats'),
@@ -28,14 +26,12 @@ export const knowledgeAPI = {
   getEntity: (id) => api.get(`/knowledge/entities/${id}`)
 };
 
-// Copilot
 export const copilotAPI = {
   chat: (query, conversationId) => api.post('/copilot/chat', { query, conversationId }),
   getSuggestions: () => api.get('/copilot/suggestions'),
   clearConversation: (id) => api.delete(`/copilot/conversation/${id}`)
 };
 
-// Maintenance
 export const maintenanceAPI = {
   getDashboard: () => api.get('/maintenance/dashboard'),
   getRecords: (params) => api.get('/maintenance/records', { params }),
@@ -43,7 +39,6 @@ export const maintenanceAPI = {
   getPredictions: () => api.get('/maintenance/predictions')
 };
 
-// Compliance
 export const complianceAPI = {
   getDashboard: () => api.get('/compliance/dashboard'),
   getRules: (params) => api.get('/compliance/rules', { params }),
@@ -51,7 +46,6 @@ export const complianceAPI = {
   generateAuditPackage: (regulation) => api.post('/compliance/audit-package', { regulation })
 };
 
-// Lessons
 export const lessonsAPI = {
   getDashboard: () => api.get('/lessons/dashboard'),
   getIncidents: (params) => api.get('/lessons/incidents', { params }),

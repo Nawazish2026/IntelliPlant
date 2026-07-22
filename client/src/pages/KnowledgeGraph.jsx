@@ -39,7 +39,6 @@ export default function KnowledgeGraph() {
     const r = (node.val || 5) * 1;
     ctx.beginPath(); ctx.arc(node.x, node.y, r, 0, 2 * Math.PI);
     
-    // Attempt to parse CSS var into a hard hex or fallback for canvas
     let fill = typeColor[node.type] || typeColor.default;
     if (fill.includes('var')) fill = getComputedStyle(document.documentElement).getPropertyValue(fill.replace('var(', '').replace(')', '')).trim() || '#888';
     
@@ -64,7 +63,6 @@ export default function KnowledgeGraph() {
 
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Header */}
       <div style={{ padding: '20px 32px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-surface)' }}>
         <div>
           <div className="page-title" style={{ marginBottom: '2px', fontSize: '18px' }}>Knowledge Graph</div>

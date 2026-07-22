@@ -6,14 +6,8 @@ dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-/**
- * Lessons Learned AI Service
- * Pattern analysis, incident intelligence, and proactive warnings
- */
 
-/**
- * Get lessons learned dashboard
- */
+
 export async function getDashboard() {
   try {
     const [total, bySeverity, byType, recent, patterns] = await Promise.all([
@@ -50,9 +44,6 @@ export async function getDashboard() {
   }
 }
 
-/**
- * Analyze incidents for systemic patterns using AI
- */
 export async function analyzePatterns() {
   try {
     const incidents = await Incident.find().sort({ date: -1 }).lean();
@@ -106,12 +97,8 @@ Provide a comprehensive, structured analysis that would be immediately actionabl
   }
 }
 
-/**
- * Get proactive alerts based on current conditions
- */
 export async function getAlerts() {
   try {
-    // Find patterns with multiple occurrences
     const patterns = await Incident.aggregate([
       { $unwind: '$patternTags' },
       { $group: {
