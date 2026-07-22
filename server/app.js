@@ -52,6 +52,12 @@ app.use((err, req, res, next) => {
 
 const startServer = async () => {
   await connectDB();
+  
+  if (process.env.VERCEL) {
+    console.log('Running in Vercel Serverless mode');
+    return;
+  }
+
   app.listen(PORT, () => {
     console.log(`
 ╔══════════════════════════════════════════════════╗
