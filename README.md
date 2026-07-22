@@ -1,4 +1,4 @@
-# 🏭 IntelliPlant — Industrial Knowledge Intelligence Platform
+# IntelliPlant — Industrial Knowledge Intelligence Platform
 
 **AI-Powered Unified Asset & Operations Brain**
 
@@ -108,6 +108,5 @@ The platform ships with realistic synthetic data for **Bharat Petrochem Complex 
 - 12 compliance rules with gap analysis
 - 8 incident reports with lessons learned
 
-## 📄 License
+<img width="992" height="616" alt="image" src="https://github.com/user-attachments/assets/7b94be7d-715a-49a6-85af-ed7c363d63b3" />
 
-Built for ET Hackathon 2026
