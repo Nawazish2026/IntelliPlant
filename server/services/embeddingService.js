@@ -4,7 +4,7 @@ import Embedding from '../models/Embedding.js';
 
 dotenv.config();
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'missing_key' });
 
 export async function generateEmbedding(text) {
   try {
